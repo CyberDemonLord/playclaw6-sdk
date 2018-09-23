@@ -1,0 +1,4 @@
+source code/import.bat
+bin/plugins/*.dll
+obj
+.vs
