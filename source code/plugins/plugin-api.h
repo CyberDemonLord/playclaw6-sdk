@@ -167,7 +167,9 @@ struct GH_VIDEO_ENCODER_EXTRA_DATA
 
 // creates media sample in system memory for encoder output
 GAMEHOOK_API void* GH_VideoEncoderCreateSample(void* lpAllocator, void* lpBuffer, unsigned bufferSize);
-
+GAMEHOOK_API unsigned char* GH_H264BeginAnnexB(const unsigned char* lpSrc, unsigned srcsize, int timeOffset, unsigned forceNal, unsigned* lpMaxPriority, unsigned* outsize);
+GAMEHOOK_API void GH_H264EndAnnexB();
+GAMEHOOK_API unsigned GH_H264PrepareVideoHeader(const unsigned char* lpData, unsigned dataSize, unsigned char* lpHeaderBuffer);
 
 
 
@@ -217,6 +219,10 @@ GAMEHOOK_API int			GH_MessageBox(const wchar_t* szMessage, int opt);
 GAMEHOOK_API void			GH_GetCurrentGameFrameSize(LPDWORD lpdwWidth, LPDWORD lpdwHeight);
 GAMEHOOK_API DWORD			GH_GetCurrentGameRenderType();
 GAMEHOOK_API HWND			GH_GetAppWindow();
+
+GAMEHOOK_API void			GH_CPrint(const char* format, ...);
+GAMEHOOK_API void			GH_DPrint(const char* format, ...);
+GAMEHOOK_API void			GH_Print(const char* format, ...);
 
 // ----- toolbar --------------------------------------------
 

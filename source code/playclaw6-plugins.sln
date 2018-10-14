@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleExtPlugin", "plugins\SampleExtPlugin\SampleExtPlugin.vcxproj", "{8746EA75-B17E-49C8-9F44-7931A6395E94}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encoder-x264", "plugins\encoder-x264\encoder-x264.vcxproj", "{9D945BCB-D88E-4966-AC8D-07D6107EC267}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,10 @@ Global
 		{8746EA75-B17E-49C8-9F44-7931A6395E94}.Debug|x86.Build.0 = Debug|Win32
 		{8746EA75-B17E-49C8-9F44-7931A6395E94}.Release|x86.ActiveCfg = Release|Win32
 		{8746EA75-B17E-49C8-9F44-7931A6395E94}.Release|x86.Build.0 = Release|Win32
+		{9D945BCB-D88E-4966-AC8D-07D6107EC267}.Debug|x86.ActiveCfg = Debug|Win32
+		{9D945BCB-D88E-4966-AC8D-07D6107EC267}.Debug|x86.Build.0 = Debug|Win32
+		{9D945BCB-D88E-4966-AC8D-07D6107EC267}.Release|x86.ActiveCfg = Release|Win32
+		{9D945BCB-D88E-4966-AC8D-07D6107EC267}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

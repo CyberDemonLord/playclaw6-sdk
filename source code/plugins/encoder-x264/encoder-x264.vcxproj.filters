@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="encoder-x264.h" />
+    <ClInclude Include="..\plugin-api.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\plugin-api-gui.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\plugin-api-helper.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\plugin-encoder-template.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\plugin-template.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\jsoncpp\value.h">
+      <Filter>api\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\jsoncpp\writer.h">
+      <Filter>api\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="x264.h" />
+    <ClInclude Include="x264_config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="encoder-x264.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="..\plugin-encoder-template.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\plugin-template.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\jsoncpp\json_value.cpp">
+      <Filter>api\jsoncpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\jsoncpp\json_writer.cpp">
+      <Filter>api\jsoncpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="api">
+      <UniqueIdentifier>{92e2b70d-f10d-4162-8b35-146dcf8adaeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="api\jsoncpp">
+      <UniqueIdentifier>{4091d619-43ce-4ec0-b7b0-d54e3d073304}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
