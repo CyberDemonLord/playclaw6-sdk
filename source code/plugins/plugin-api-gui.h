@@ -92,6 +92,22 @@ public:
 	}
 
 
+	int selectBegin(const char* s)
+	{
+		m_iSelection = -1;
+		m_sSelection = "";
+		for (unsigned i = 0; i < m_Items.size(); i++)
+		{
+			if (strstr(m_Items[i].c_str(), s) == m_Items[i].c_str())
+			{
+				m_iSelection = i;
+				m_sSelection = m_Items[i];
+				break;
+			}
+		}
+		return m_iSelection;
+	}
+
 	int select(const char* s)
 	{
 		m_iSelection = -1;

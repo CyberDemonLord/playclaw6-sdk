@@ -29,39 +29,43 @@ CVideoEncoderX264::~CVideoEncoderX264()
 }
 
 
+static vector<string>	x264_rate_controls = { "CBR", "VBR" };
 
 void CVideoEncoderX264::SetDefaults()
 {
-	preset = x264_preset_names[0];
+	strcpy_s(preset, x264_preset_names[0]);
 	num_threads = X264_THREADS_AUTO;
 	cabac = true;
 	bitrate = 50000;
 	buffersize = 0;
-	rc = "CBR";
+	strcpy_s(rc, "CBR");
 	use_cfr = true;
 	keyint = 2;
 	bframes = 0;
-/*
+
 	// prepare combos
 	m_cbRateControl.m_sName = "##h264-rate-control";
 	m_cbRateControl.m_fWidth = -50;
 	m_cbRateControl.m_Items.clear();
-	auto qsv_platform = qsv_get_cpu_platform();
-	for each (const auto& p in qsv_rate_controls)
+	for each (const auto& p in x264_rate_controls)
 	{
-		if (qsv_platform >= QSV_CPU_PLATFORM_HSW || !p.second)
-		{
-			string locstr = "RC_";
-			locstr += p.first;
+		string locstr = "RC_";
+		locstr += p;
 
-			string str = p.first;
-			str += " - ";
-			str += LocalizeStr8(locstr.c_str());
+		string str = p;
+		str += " - ";
+		str += LocalizeStr8(locstr.c_str());
 
-			m_cbRateControl.m_Items.push_back(str);
-		}
+		m_cbRateControl.m_Items.push_back(str);
 	}
-*/
+
+	m_cbPreset.m_sName = "##h264-preset";
+	m_cbPreset.m_fWidth = -50;
+	m_cbPreset.m_Items.clear();
+	
+	for each (auto presetStr in x264_preset_names)
+		if (presetStr)
+			m_cbPreset.m_Items.push_back(presetStr);
 }
 
 
@@ -69,29 +73,22 @@ void CVideoEncoderX264::LoadFromFile(const Json::Value& config)
 {
 	const Json::Value& x264 = config["x264"];
 
-/*
-	jsonLoad(rc, qsv["rc"]);
-	jsonLoad(rc, config["force-rc"], false);
-	jsonLoad(qpi, qsv["qpi"], false);
-	jsonLoad(qpp, qsv["qpp"], false);
-	jsonLoad(qpb, qsv["qpb"], false);
-	jsonLoad(async_depth, qsv["async-depth"], false);
+	jsonLoad(rc, sizeof(rc), x264["rc"]);
+	jsonLoad(rc, sizeof(rc), config["force-rc"], false);
+	jsonLoad(preset, sizeof(preset), x264["preset"]);
+	jsonLoad(num_threads, x264["num-threads"]);
 
 	jsonLoad(keyint, config["keyint"]);
 	jsonLoad(bframes, config["b-frames"]);
 	jsonLoad(bitrate, config["bitrate"]);
-	jsonLoad(maxbitrate, config["max-bitrate"]);
+//	jsonLoad(maxbitrate, config["max-bitrate"]);
 	jsonLoad(cabac, config["cabac"]);
 
-	for (unsigned i = 0; i < ARRAYSIZE(qsv_rate_controls); i++)
-	{
-		if (qsv_rate_controls[i].first == rc)
-			m_cbRateControl.select(i);
-	}
-
-	if (m_cbRateControl.m_iSelection == -1)
+	if (m_cbRateControl.selectBegin(rc) == -1)
 		m_cbRateControl.select(0u);
-*/
+
+	if (m_cbPreset.select(preset) == -1)
+		m_cbPreset.select(0u);
 }
 
 
@@ -99,44 +96,51 @@ void CVideoEncoderX264::SaveToFile(Json::Value& config)
 {
 	Json::Value& x264 = config["x264"];
 
-/*
-	jsonSave(rc, qsv["rc"]);
-	jsonSave(qpi, qsv["qpi"]);
-	jsonSave(qpp, qsv["qpp"]);
-	jsonSave(qpb, qsv["qpb"]);
-	jsonSave(async_depth, qsv["async-depth"]);
+	jsonSave(rc, x264["rc"]);
+	jsonSave(preset, x264["preset"]);
+	jsonSave(num_threads, x264["num-threads"]);
 
 	jsonSave(keyint, config["keyint"]);
 	jsonSave(bframes, config["b-frames"]);
 	jsonSave(bitrate, config["bitrate"]);
-	jsonSave(maxbitrate, config["max-bitrate"]);
+//	jsonSave(maxbitrate, config["max-bitrate"]);
 	jsonSave(cabac, config["cabac"]);
-*/
 }
 
 #pragma region	x264 Imgui Configuration
 
 void CVideoEncoderX264::OnImGuiDraw()
 {
-	/*
+	// preset
+	ImGui::Text(LocalizeStr8("X264_PRESET"));
+	if (m_cbPreset.draw())
+		strcpy_s(preset, x264_preset_names[m_cbPreset.m_iSelection]);
+
+	// num threads
+	ImGui::Text(LocalizeStr8("X264_NUM_THREADS"));
+	ImGui::InputInt("##x264-threads", &num_threads);
+	num_threads = min(max(0, num_threads), 8);
+
 	bool opt1 = true;
 	bool opt2 = true;
 	ImGui::SetNextTreeNodeOpen(opt1, ImGuiCond_FirstUseEver);
-	opt1 = ImGui::CollapsingHeader(LocalizeStr8("H264_SEQ_CTRL"));
+	opt1 = ImGui::CollapsingHeader(LocalizeStr8("X264_SEQ_CTRL"));
 	if (opt1)
 	{
 		ImGui::PushItemWidth(120);	// for InputInts
 
 		ImGui::Spacing();
 		// key int
-		ImGui::Text(LocalizeStr8("H264_KEYINT"));
+		ImGui::Text(LocalizeStr8("X264_KEYINT"));
 		ImGui::InputInt("##h264-keyint", &keyint);
 		keyint = min(max(1, keyint), 100);
 
+		/*
 		// b-frames
-		ImGui::Text(LocalizeStr8("H264_QSV_BFRAMES"));
+		ImGui::Text(LocalizeStr8("H264_X264_BFRAMES"));
 		ImGui::InputInt("##h264-bframes", &bframes);
 		bframes = min(max(0, bframes), 10);
+		*/
 
 		ImGui::PopItemWidth();
 	}
@@ -144,75 +148,27 @@ void CVideoEncoderX264::OnImGuiDraw()
 	ImGui::Spacing();
 
 	ImGui::SetNextTreeNodeOpen(opt2, ImGuiCond_FirstUseEver);
-	opt2 = ImGui::CollapsingHeader(LocalizeStr8("H264_BITRATE_CTRL"));
+	opt2 = ImGui::CollapsingHeader(LocalizeStr8("X264_BITRATE_CTRL"));
 	if (opt2)
 	{
 		ImGui::Spacing();
 
 		// rate control
-		ImGui::Text(LocalizeStr8("H264_BITRATE_METHOD"));
+		ImGui::Text(LocalizeStr8("X264_BITRATE_METHOD"));
 		if (m_cbRateControl.draw())
 		{
-			rc = qsv_rate_controls[m_cbRateControl.m_iSelection].first;
+			strcpy_s(rc, x264_rate_controls[m_cbRateControl.m_iSelection].c_str());
 		}
 
 		ImGui::PushItemWidth(120);	// for InputInts
 
-									// bitrate
-		if (!(rc == H264_QSV_RATE_CONTROL_LA || rc == H264_QSV_RATE_CONTROL_LAICQ || rc == H264_RATE_CONTROL_CQP))
-		{
-			ImGui::Text(LocalizeStr8("H264_BITRATE"));
-			ImGui::InputInt("##h264-bitrate", &bitrate);
-			bitrate = min(max(bitrate, 100), 200000);
-		}
-
-		// max bitrate
-		if (rc == H264_RATE_CONTROL_VBR || rc == H264_QSV_RATE_CONTROL_VCM)
-		{
-			ImGui::Text(LocalizeStr8("H264_MAX_BITRATE"));
-			ImGui::InputInt("##h264-max-bitrate", &maxbitrate);
-			maxbitrate = min(max(maxbitrate, 100), 200000);
-		}
-
-		// async depth
-		ImGui::Text(LocalizeStr8("H264_QSV_ASYNC"));
-		ImGui::InputInt("##h264-qsv-async-depth", &async_depth);
-		async_depth = min(max(async_depth, 1), 7);
-
-		// accuracy
-		if (rc == H264_QSV_RATE_CONTROL_AVBR)
-		{
-			ImGui::Text(LocalizeStr8("H264_ACC"));
-			ImGui::InputInt("##h264-accuracy", &accuracy);
-			//			maxbitrate = min(max(maxbitrate, 100), 200000);
-			ImGui::Text(LocalizeStr8("H264_CONV"));
-			ImGui::InputInt("##h264-convergence", &convergence);
-		}
-
-		// QP
-		if (rc == H264_RATE_CONTROL_CQP)
-		{
-			ImGui::Text("QPI, QPP, QPB (0-51)");
-			int qp[3] = { qpi, qpp, qpb };
-			ImGui::InputInt3("##h264-qp", qp);
-			qpi = max(min(qp[0], 51), 0);
-			qpp = max(min(qp[1], 51), 0);
-			qpb = max(min(qp[2], 51), 0);
-		}
-
-		// LA ICQ
-		if (rc == H264_QSV_RATE_CONTROL_LAICQ || rc == H264_QSV_RATE_CONTROL_ICQ)
-		{
-			ImGui::Text(LocalizeStr8("H264_ICQ"));
-			ImGui::InputInt("##h264-icq", &icq_quality);
-			ImGui::Text(LocalizeStr8("H264_LA"));
-			ImGui::InputInt("##h264-ladepth", &la_depth);
-		}
+		// bitrate
+		ImGui::Text(LocalizeStr8("X264_BITRATE"));
+		ImGui::InputInt("##h264-bitrate", &bitrate);
+		bitrate = min(max(bitrate, 10), 200000);
 
 		ImGui::PopItemWidth();
 	}
-
-	*/
 }
 
 void CVideoEncoderX264::OnImGuiConfigure(void* param)
@@ -331,9 +287,9 @@ BOOL CVideoEncoderX264::StartEncoder(unsigned *lpuWidth, unsigned *lpuHeight, un
 //	m_Params.p_log_private = this;
 	m_Params.i_log_level = X264_LOG_WARNING;//*/X264_LOG_DEBUG;
 
-	if (preset.empty())
-		preset = x264_preset_names[0];
-	X264_param_default_preset(&m_Params, preset.c_str(), "");
+	if (!preset[0])
+		strcpy_s(preset, x264_preset_names[0]);
+	X264_param_default_preset(&m_Params, preset, "");
 
 	m_Params.b_deterministic = false;		// optimizations
 	m_Params.i_threads = max(num_threads, X264_THREADS_AUTO);	// num threads
@@ -373,8 +329,8 @@ BOOL CVideoEncoderX264::StartEncoder(unsigned *lpuWidth, unsigned *lpuHeight, un
 
 	// print config
 	GH_DPrint("  Frame rate          : %.3f", float(fps1000) / 1000.0f);
-	GH_DPrint("  Preset              : %s", preset.c_str());
-	GH_DPrint("  Rate control        : %s", rc.c_str());
+	GH_DPrint("  Preset              : %s", preset);
+	GH_DPrint("  Rate control        : %s", rc);
 	GH_DPrint("  Bitrate             : %d", m_Params.rc.i_bitrate);
 	GH_DPrint("  I-frames interval   : %d", m_Params.i_keyint_max);
 	GH_DPrint("  B-frames interval   : %d", m_Params.i_bframe);

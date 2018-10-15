@@ -27,6 +27,15 @@
     </ClInclude>
     <ClInclude Include="x264.h" />
     <ClInclude Include="x264_config.h" />
+    <ClInclude Include="..\plugin-api-json.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\jsoncpp\forwards.h">
+      <Filter>api\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\jsoncpp\config.h">
+      <Filter>api\jsoncpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="encoder-x264.cpp" />
@@ -38,12 +47,6 @@
     <ClCompile Include="..\plugin-template.cpp">
       <Filter>api</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\common\jsoncpp\json_value.cpp">
-      <Filter>api\jsoncpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\jsoncpp\json_writer.cpp">
-      <Filter>api\jsoncpp</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="api">
@@ -51,6 +54,9 @@
     </Filter>
     <Filter Include="api\jsoncpp">
       <UniqueIdentifier>{4091d619-43ce-4ec0-b7b0-d54e3d073304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="api\imgui">
+      <UniqueIdentifier>{4c35cfd8-1b66-40f4-80d7-18f70f202886}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

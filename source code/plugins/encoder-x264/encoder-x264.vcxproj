@@ -93,10 +93,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\common\jsoncpp\config.h" />
+    <ClInclude Include="..\..\common\jsoncpp\forwards.h" />
     <ClInclude Include="..\..\common\jsoncpp\value.h" />
     <ClInclude Include="..\..\common\jsoncpp\writer.h" />
     <ClInclude Include="..\plugin-api-gui.h" />
     <ClInclude Include="..\plugin-api-helper.h" />
+    <ClInclude Include="..\plugin-api-json.h" />
     <ClInclude Include="..\plugin-api.h" />
     <ClInclude Include="..\plugin-encoder-template.h" />
     <ClInclude Include="..\plugin-template.h" />
@@ -107,8 +110,6 @@
     <ClInclude Include="x264_config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\jsoncpp\json_value.cpp" />
-    <ClCompile Include="..\..\common\jsoncpp\json_writer.cpp" />
     <ClCompile Include="..\plugin-encoder-template.cpp" />
     <ClCompile Include="..\plugin-template.cpp" />
     <ClCompile Include="dllmain.cpp" />

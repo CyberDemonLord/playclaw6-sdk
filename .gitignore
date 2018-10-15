@@ -1,4 +1,6 @@
 source code/import.bat
-bin/plugins/*.dll
+bin/plugins
 obj
 .vs
+/release
+*.zip

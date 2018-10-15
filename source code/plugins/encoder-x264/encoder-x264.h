@@ -7,8 +7,8 @@ class CVideoEncoderX264 : public CPluginEncoderTemplate
 
 
 	// config
-	string			preset;
-	string			rc;
+	char			preset[64];
+	char			rc[64];
 	int				num_threads;
 	bool			cabac;
 	int				bitrate;
@@ -28,32 +28,14 @@ class CVideoEncoderX264 : public CPluginEncoderTemplate
 	bool			Encode(x264_picture_t *pInputFrame, GH_VIDEO_ENCODER_EXTRA_DATA::ENCODED_DATA* lpEncodedData);
 
 
-/*
+	// imgui
 	CGuiCombobox	m_cbRateControl;
-
-	// config
-	int				keyint, bframes, bitrate, maxbitrate;
-	int				async_depth;
-	int				accuracy, convergence, icq_quality, la_depth;
-	int				qpi, qpp, qpb;
-	bool			cabac;
-
-	// realtime
-	qsv_t*			m_pEncoder;
-	vector<BYTE>	m_Header;
-	int				m_iFrameShift;
-	INT64			m_DeltaTS;			// if incoming frame has ts=0, then decode ts will be negative :(
-	void*			m_lpAllocator;
-
-	unsigned		m_FrameWidth, m_FrameHeight, m_Fps1000;
-	UINT64			m_FrameTime;
-*/
+	CGuiCombobox	m_cbPreset;
 
 	void			SetDefaults() override;
 	void			LoadFromFile(const Json::Value& config) override;
 	void			SaveToFile(Json::Value& config) override;
 
-//	BOOL			ProcessEncodedFrame(mfxBitstream *pBS, GH_VIDEO_ENCODER_EXTRA_DATA::ENCODED_DATA* lpEncodedData);
 	BOOL			StartEncoder(unsigned *lpuWidth, unsigned *lpuHeight, unsigned fps1000, GH_VIDEO_ENCODER_EXTRA_DATA::INIT_DATA* lpInitData) override;
 	BOOL			EncodeFrame(const GH_VIDEO_ENCODER_EXTRA_DATA::FRAME_DATA* lpFrameData, GH_VIDEO_ENCODER_EXTRA_DATA::ENCODED_DATA* lpEncodedData);
 	BOOL			DrainFrames(GH_VIDEO_ENCODER_EXTRA_DATA::ENCODED_DATA* lpEncodedData);

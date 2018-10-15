@@ -224,13 +224,6 @@ GAMEHOOK_API void			GH_CPrint(const char* format, ...);
 GAMEHOOK_API void			GH_DPrint(const char* format, ...);
 GAMEHOOK_API void			GH_Print(const char* format, ...);
 
-// ----- toolbar --------------------------------------------
-
-typedef BOOL(__stdcall* GH_TOOLBAR_RIGHT_CTRL_CB)(void*, WPARAM, LPARAM);
-
-GAMEHOOK_API HWND GH_CreateToolbarRightControl(const wchar_t* classname, DWORD styles, int w, int h, GH_TOOLBAR_RIGHT_CTRL_CB callback, void* callback_param);
-
-
 // ----- web render ------------------------------------
 
 struct GH_MOUSE_EVENT
