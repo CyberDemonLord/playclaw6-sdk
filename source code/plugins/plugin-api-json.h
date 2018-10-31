@@ -109,8 +109,10 @@ inline void jsonLoad(unsigned& var, const Json::Value& value, bool acceptNull = 
 		if (value.isString())	var = atoi(value.asCString());
 }
 
-inline void jsonLoad(float& var, const Json::Value& value)
+inline void jsonLoad(float& var, const Json::Value& value, bool acceptNull = true)
 {
+	if (value.isNull() && !acceptNull)
+		return;
 	if (value.isConvertibleTo(Json::realValue))	var = value.asFloat();
 	else
 		if (value.isString())	var = float(atof(value.asCString()));

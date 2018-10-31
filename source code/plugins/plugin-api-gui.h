@@ -225,6 +225,17 @@ inline void GuiShowHelpMarker(const char* desc)
 	}
 }
 
+namespace ImGuiGH
+{
+	inline void TextLabel(const char* label)
+	{
+		const ImVec2 label_size = ImGui::CalcTextSize(label, nullptr, true);
+		ImGui::PushItemWidth(label_size.x);
+		ImGui::LabelText("", label);
+		ImGui::PopItemWidth();
+	};
+};
+
 GAMEHOOK_API void GH_GuiShowSimpleTooltip(const char* str, unsigned delay = 500);
 GAMEHOOK_API void GH_GuiShowHoverTooltip(const char* str, unsigned delay = 500);
 

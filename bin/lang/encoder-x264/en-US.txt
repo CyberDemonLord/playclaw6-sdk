@@ -1,0 +1,11 @@
+X264_PRESET			Preset
+X264_SEQ_CTRL			Frames sequence control
+X264_KEYINT			Keyframes interval, seconds
+X264_BITRATE_CTRL		Bitrate control
+X264_BITRATE_METHOD		Control method
+X264_BITRATE			Bitrate, kbps
+X264_CABAC			Enable CABAC
+X264_NUM_THREADS		Threads count
+
+RC_CBR				Constant bitrate
+RC_VBR				Variable bitrate

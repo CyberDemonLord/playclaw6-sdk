@@ -280,6 +280,8 @@ BOOL CVideoEncoderX264::StartEncoder(unsigned *lpuWidth, unsigned *lpuHeight, un
 	m_lpAllocator = lpInitData->lpAllocator;
 	lpInitData->colorSpace = GH_VIDEO_ENCODER_EXTRA_DATA::INIT_DATA::COLOR_NV12;
 	lpInitData->allFrames = true;
+	lpInitData->dropLimit = 10;
+
 
 
 	// init default params
